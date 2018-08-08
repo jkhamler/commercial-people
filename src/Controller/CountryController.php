@@ -21,6 +21,11 @@ class CountryController extends AbstractController
 
         $serializer = SerializerBuilder::create()->build();
 
-        return new Response($serializer->serialize(['countries' => $countries], 'json'));
+        return new Response(
+            $serializer->serialize(
+                ['countries' => $countries],
+                'json'),
+            Response::HTTP_OK
+        );
     }
 }
