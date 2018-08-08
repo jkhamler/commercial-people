@@ -33,7 +33,7 @@ class Player
     private $heightCm;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="players")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Team", mappedBy="players")
      * @ORM\JoinColumn(nullable=true)
      */
     private $teams;

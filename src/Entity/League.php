@@ -30,9 +30,15 @@ class League
      */
     private $leagueTeams;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="League")
+     */
+    private $matches;
+
     public function __construct()
     {
         $this->leagueTeams = new ArrayCollection();
+        $this->matches = new ArrayCollection();
     }
 
     /**
@@ -116,6 +122,37 @@ class League
         foreach ($this->leagueTeams as $leagueTeam) {
             if($leagueTeam->getTeam()->getId() == $team->getId()){
                 $this->leagueTeams->remove($leagueTeam);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Match[]
+     */
+    public function getMatches(): Collection
+    {
+        return $this->matches;
+    }
+
+    public function addMatch(Match $match): self
+    {
+        if (!$this->matches->contains($match)) {
+            $this->matches[] = $match;
+            $match->setLeague($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatch(Match $match): self
+    {
+        if ($this->matches->contains($match)) {
+            $this->matches->removeElement($match);
+            // set the owning side to null (unless already changed)
+            if ($match->getLeague() === $this) {
+                $match->setLeague(null);
             }
         }
 

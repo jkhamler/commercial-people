@@ -28,7 +28,7 @@ class Team
     private $strip;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Player", mappedBy="teams")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Player", inversedBy="teams")
      * @ORM\JoinColumn(nullable=true)
      */
     private $players;
