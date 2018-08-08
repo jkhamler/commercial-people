@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,30 +33,53 @@ class Team
      */
     private $players;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="teams")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $country;
 
-    public function getId()
+
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    /**
+     * @param string $name
+     * @return Team
+     */
+    public function setName(string $name): Team
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getStrip(): ?string
+    /**
+     * @return string
+     */
+    public function getStrip(): string
     {
         return $this->strip;
     }
 
-    public function setStrip(string $strip): self
+    /**
+     * @param string $strip
+     * @return Team
+     */
+    public function setStrip(string $strip): Team
     {
         $this->strip = $strip;
 
@@ -63,9 +87,9 @@ class Team
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection|Player[]
      */
-    public function getPlayers()
+    public function getPlayers() : ArrayCollection
     {
         return $this->players;
     }
@@ -77,6 +101,24 @@ class Team
     public function addPlayer(Player $player) : Team
     {
         $this->players[] = $player;
+        return $this;
+    }
+
+    /**
+     * @return Country
+     */
+    public function getCountry() : Country
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param Country $country
+     * @return Team
+     */
+    public function setCountry(Country $country) : Team
+    {
+        $this->country = $country;
         return $this;
     }
 

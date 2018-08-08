@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,17 +38,26 @@ class Player
      */
     private $teams;
 
-
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Player
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -55,11 +65,18 @@ class Player
         return $this;
     }
 
-    public function getAge(): ?int
+    /**
+     * @return int
+     */
+    public function getAge(): int
     {
         return $this->age;
     }
 
+    /**
+     * @param int $age
+     * @return Player
+     */
     public function setAge(int $age): self
     {
         $this->age = $age;
@@ -67,11 +84,18 @@ class Player
         return $this;
     }
 
-    public function getHeightCm(): ?int
+    /**
+     * @return int
+     */
+    public function getHeightCm(): int
     {
         return $this->heightCm;
     }
 
+    /**
+     * @param int $heightCm
+     * @return Player
+     */
     public function setHeightCm(int $heightCm): self
     {
         $this->heightCm = $heightCm;
@@ -80,9 +104,9 @@ class Player
     }
 
     /**
-     * @return Team
+     * @return Team[]|ArrayCollection
      */
-    public function getTeams() : Team
+    public function getTeams() : ArrayCollection
     {
         return $this->teams;
     }
@@ -91,7 +115,7 @@ class Player
      * @param Team $team
      * @return Player
      */
-    public function addTeam($team) : Player
+    public function addTeam(Team $team) : Player
     {
         $this->teams[] = $team;
         return $this;
