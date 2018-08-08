@@ -26,6 +26,13 @@ class Team
      */
     private $strip;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Player", mappedBy="teams")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $players;
+
+
     public function getId()
     {
         return $this->id;
@@ -54,4 +61,26 @@ class Team
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
+    /**
+     * @param Player $player
+     * @return Team
+     */
+    public function addPlayer(Player $player) : Team
+    {
+        $this->players[] = $player;
+        return $this;
+    }
+
+
+
+
 }

@@ -10,6 +10,8 @@ namespace App\DataFixtures;
 
 
 use App\Entity\Country;
+use App\Entity\League;
+use App\Entity\Team;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -35,11 +37,18 @@ class AppFixtures extends Fixture
 
         $manager->persist($france);
 
+        $ipswichTown = new Team();
+        $ipswichTown->setName('Ipswich Town');
+        $ipswichTown->setStrip('Blue and White');
+        $manager->persist($ipswichTown);
 
 
+        $premierLeague = new League();
+        $premierLeague->setName('Premier League');
+        $premierLeague->addTeam($ipswichTown);
+        $manager->persist($premierLeague);
 
-
-// Flush all entities
+        // Flush all entities
         $manager->flush();
 
 
