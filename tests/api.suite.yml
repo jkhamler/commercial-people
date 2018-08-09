@@ -1,0 +1,29 @@
+actor: ApiTester
+modules:
+    enabled:
+        - \Helper\Api
+        - Asserts
+        - REST:
+            url: http://localhost:8888
+            depends: PhpBrowser
+            part: Json
+        - Symfony:
+            app_path: 'src'
+            environment: 'test'
+        - Doctrine2:
+            depends: Symfony
+            cleanup: true
+        - Db:
+             dsn: 'mysql:host=localhost;dbname=commercial_people'
+             user: 'root'
+             password: 'root'
+             dump: 'tests/_data/commercial_people_2018-08-09.sql'
+             populate: true
+             cleanup: true
+             reconnect: true
+             waitlock: 10
+coverage:
+    remote: true
+config:
+    PhpBrowser:
+        url: 'http://localhost:8888'
