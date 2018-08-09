@@ -7,13 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TeamRepository")
  * @ExclusionPolicy("all")
- * @UniqueEntity("name")
  */
 class Team
 {
@@ -27,7 +23,6 @@ class Team
     /**
      * @Expose
      * @ORM\Column(name="name", type="string", length=255, unique=true)
-     * @Assert\NotBlank()
      */
     private $name;
 

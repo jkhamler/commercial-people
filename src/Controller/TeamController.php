@@ -48,9 +48,16 @@ class TeamController extends Controller
             /** @var TeamDTO $teamDTO */
             $teamDTO = $form->getData();
 
-            $team = $teamDTO->createTeamEntity();
-
             $em = $this->getDoctrine()->getManager();
+
+            if($em->getRepository(Team::class)->findOneBy([
+                'name' => $teamDTO->getName()
+            ])){
+                return new Response("Team name {$teamDTO->getName()} has already been taken.",
+                    Response::HTTP_UNAUTHORIZED); // todo - move this into form validation.
+            }
+
+            $team = $teamDTO->createTeamEntity();
 
             $em->persist($team);
 
