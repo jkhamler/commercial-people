@@ -3,13 +3,41 @@
 namespace App\Controller;
 
 use App\Entity\League;
+use Doctrine\DBAL\Types\Type;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class LeagueController extends Controller
 {
+
+    /**
+     * @Route("/league/{leagueId}/teams", name="league-teams", requirements={"leagueId"="\d+"})
+     * @Method({"GET"})
+     *
+     * @param SerializerInterface $serializer
+     * @return Response
+     */
+    public function listTeams($leagueId, SerializerInterface $serializer){
+
+        /** @var League|null $league */
+        $league = $this->getDoctrine()
+            ->getRepository(League::class)
+            ->find($leagueId);
+
+        if(!$league){
+            return new Response("No League with ID {$leagueId} found", Response::HTTP_NOT_FOUND);
+        }
+        else{
+            return new Response(
+                $serializer->serialize(['teams' => $league->getTeams()], Type::JSON)
+            , Response::HTTP_OK);
+        }
+    }
+
+
     /**
      * @Route("/league-stats", name="league-stats")
      *

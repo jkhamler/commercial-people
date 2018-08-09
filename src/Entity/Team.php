@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TeamRepository")
+ * @ExclusionPolicy("all")
  */
 class Team
 {
@@ -18,11 +21,13 @@ class Team
     private $id;
 
     /**
+     * @Expose
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Expose
      * @ORM\Column(type="string", length=255)
      */
     private $strip;
@@ -50,7 +55,7 @@ class Team
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -69,7 +74,7 @@ class Team
     /**
      * @return string
      */
-    public function getStrip(): string
+    public function getStrip(): ?string
     {
         return $this->strip;
     }
@@ -107,7 +112,7 @@ class Team
     /**
      * @return string
      */
-    public function getClubAddress() : string
+    public function getClubAddress() : ?string
     {
         return $this->clubAddress;
     }

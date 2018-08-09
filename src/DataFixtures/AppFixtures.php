@@ -9,7 +9,6 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\Country;
 use App\Entity\League;
 use App\Entity\LeagueMatch;
 use App\Entity\Player;
