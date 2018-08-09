@@ -16,7 +16,7 @@ class TeamController extends Controller
 {
 
     /**
-     * @Route("/team/create", name="create-team")
+     * @Route("/team", name="create-team")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -34,7 +34,10 @@ class TeamController extends Controller
         $form->submit($data);
 
         if (!$form->isValid()) {
-            return new Response("Validation Errors: {$form->getErrors()}",
+
+            $formErrors = $form->getErrors();
+
+            return new Response("Validation Errors: {$formErrors}",
                 Response::HTTP_UNAUTHORIZED);
         } else {
 
@@ -54,4 +57,18 @@ class TeamController extends Controller
         }
     }
 
-}
+    /**
+     * @Route("/team/{teamId}", name="update-team", requirements={"leagueId"="\d+"})
+     * @Method({"PUT"})
+     *
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @return Response
+     */
+    public function updateTeam(Request $request, SerializerInterface $serializer)
+    {
+        echo 'PUT';exit;
+
+    }
+
+    }

@@ -23,12 +23,12 @@ class CreateTeam extends AbstractType
             ->add('clubAddress');
     }
 
-//    public function configureOptions(OptionsResolver $resolver)
-//    {
-//        $resolver->setDefaults([
-//            'data_class' =>
-//                Team::class
-//        ]);
-//    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' =>
+                Team::class
+        ]);
+    }
 
 }
