@@ -37,6 +37,24 @@ class LeagueController extends Controller
         }
     }
 
+    /**
+     * @Route("/league/{leagueId}", name="delete-league")
+     * @Method({"DELETE"})
+     *
+     * @param SerializerInterface $serializer
+     * @return Response
+     */
+    public function deleteLeague($leagueId, SerializerInterface $serializer){
+
+        echo 'DELETE';exit;
+
+
+
+    }
+
+
+
+
 
     /**
      * @Route("/league-stats", name="league-stats")

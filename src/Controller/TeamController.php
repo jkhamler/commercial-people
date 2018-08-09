@@ -6,6 +6,7 @@ use App\DTO\TeamDTO;
 use App\Entity\Team;
 use App\Form\CreateTeam;
 use App\Form\UpdateTeam;
+use App\Repository\TeamRepository;
 use Doctrine\DBAL\Types\Type;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +19,8 @@ class TeamController extends Controller
 {
 
     /**
+     * Creates a new team via a POST request.
+     *
      * @Route("/team", name="create-team")
      * @Method({"POST"})
      *
@@ -39,10 +42,10 @@ class TeamController extends Controller
 
         if (!$form->isValid()) {
 
-            $formErrors = $form->getErrors();
-
-            return new Response("Validation Errors: {$formErrors}",
+            return new Response($serializer->serialize(['Errors' => $form->getErrors()],
+                Type::JSON),
                 Response::HTTP_UNAUTHORIZED);
+
         } else {
 
             /** @var TeamDTO $teamDTO */
@@ -71,6 +74,8 @@ class TeamController extends Controller
     }
 
     /**
+     * Updates the Team information Via a PUT request.
+     *
      * @Route("/team/{teamId}", name="update-team", requirements={"leagueId"="\d+"})
      * @Method({"PUT"})
      *
@@ -81,24 +86,33 @@ class TeamController extends Controller
      */
     public function updateTeam($teamId, Request $request, SerializerInterface $serializer)
     {
+        $teamDTO = new TeamDTO();
+
+        $form = $this->createForm(UpdateTeam::class, $teamDTO, [
+            'allow_extra_fields' => false,
+        ]);
+
         $data = $request->request->all();
-
-        $team = new Team();
-
-        $form = $this->createForm(UpdateTeam::class, $team);
 
         $form->submit($data);
 
         if (!$form->isValid()) {
 
-            $formErrors = $form->getErrors();
-
-            return new Response("Validation Errors: {$formErrors}",
+            return new Response($serializer->serialize(['Errors' => $form->getErrors()],
+                Type::JSON),
                 Response::HTTP_UNAUTHORIZED);
         } else {
 
+            $teamDTO = $form->getData();
 
             $em = $this->getDoctrine()->getManager();
+
+            /** @var TeamRepository $rpTeam */
+            $rpTeam = $em->getRepository(Team::class);
+
+            $team = $rpTeam->find($teamId);
+
+            $teamDTO->updateTeam($team);
 
             $em->persist($team);
 
