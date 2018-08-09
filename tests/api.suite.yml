@@ -22,8 +22,6 @@ modules:
              cleanup: true
              reconnect: true
              waitlock: 10
-coverage:
-    remote: true
 config:
     PhpBrowser:
         url: 'http://localhost:8888'

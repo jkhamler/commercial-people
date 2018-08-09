@@ -8,6 +8,7 @@ use App\Form\CreateTeam;
 use App\Form\UpdateTeam;
 use App\Repository\TeamRepository;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\PersistentCollection;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class TeamController extends Controller
 {
+
+    /**
+     * @Route("/teams", name="list-teams")
+     * @Method({"GET"})
+     *
+     * @param SerializerInterface $serializer
+     * @return Response
+     */
+    public function listTeams(SerializerInterface $serializer){
+
+        /** @var Team[]|PersistentCollection $teams */
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findAll();
+
+        return new Response(
+            $serializer->serialize(['teams' => $teams], Type::JSON)
+            , Response::HTTP_OK);
+    }
+
 
     /**
      * Creates a new team via a POST request.
