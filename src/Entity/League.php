@@ -5,9 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LeagueRepository")
+ * @ExclusionPolicy("all")
  */
 class League
 {
@@ -19,27 +22,30 @@ class League
     private $id;
 
     /**
+     * @Expose
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LeagueTeam", mappedBy="League", cascade={"persist"})
+     * @Expose
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueTeam", mappedBy="league", cascade={"persist"})
      * @var LeagueTeam[]
      */
     private $leagueTeams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="League", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="league", cascade={"persist"})
      */
-    private $matches;
+    private $leagueMatches;
 
     public function __construct()
     {
         $this->leagueTeams = new ArrayCollection();
-        $this->matches = new ArrayCollection();
+        $this->leagueMatches = new ArrayCollection();
     }
+
 
     /**
      * @return int
@@ -131,15 +137,35 @@ class League
     /**
      * @return Collection|LeagueMatch[]
      */
-    public function getMatches(): Collection
+    public function getLeagueMatches(): Collection
     {
-        return $this->matches;
+        return $this->leagueMatches;
+    }
+
+    /**
+     * Returns league matches where a given team played (either home or away)
+     *
+     * @param Team $team
+     * @return ArrayCollection|LeagueMatch[]
+     */
+    public function getLeagueMatchesForTeam(Team $team): ArrayCollection
+    {
+        $teamLeagueMatches = new ArrayCollection();
+
+        foreach ($this->getLeagueMatches() as $leagueMatch) {
+
+            if($leagueMatch->getHomeTeam()->getId() == $team->getId() ||
+            $leagueMatch->getAwayTeam()->getId() == $team->getId()){
+                $teamLeagueMatches->add($leagueMatch);
+            }
+        }
+        return $teamLeagueMatches;
     }
 
     public function addMatch(LeagueMatch $match): self
     {
-        if (!$this->matches->contains($match)) {
-            $this->matches[] = $match;
+        if (!$this->leagueMatches->contains($match)) {
+            $this->leagueMatches[] = $match;
             $match->setLeague($this);
         }
 
@@ -148,8 +174,8 @@ class League
 
     public function removeMatch(LeagueMatch $match): self
     {
-        if ($this->matches->contains($match)) {
-            $this->matches->removeElement($match);
+        if ($this->leagueMatches->contains($match)) {
+            $this->leagueMatches->removeElement($match);
             // set the owning side to null (unless already changed)
             if ($match->getLeague() === $this) {
                 $match->setLeague(null);

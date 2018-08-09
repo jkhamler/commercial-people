@@ -117,9 +117,9 @@ class LeagueMatch
     }
 
     /**
-     * @return mixed
+     * @return Team
      */
-    public function getHomeTeam() : LeagueTeam
+    public function getHomeTeam() : Team
     {
         return $this->homeTeam;
     }

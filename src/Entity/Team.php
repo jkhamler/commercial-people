@@ -34,12 +34,6 @@ class Team
     private $players;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country", inversedBy="teams")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $country;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $clubAddress;
@@ -109,23 +103,6 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Country
-     */
-    public function getCountry() : Country
-    {
-        return $this->country;
-    }
-
-    /**
-     * @param Country $country
-     * @return Team
-     */
-    public function setCountry(Country $country) : Team
-    {
-        $this->country = $country;
-        return $this;
-    }
 
     /**
      * @return string

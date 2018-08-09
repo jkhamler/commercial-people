@@ -28,29 +28,7 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $uk = new Country();
-        $uk->setName('UK');
-        $uk->setLanguage('English');
-        $manager->persist($uk);
-
-        $france = new Country();
-        $france->setName('France');
-        $france->setLanguage('French');
-        $manager->persist($france);
-
-        $englandTeam = new Team();
-        $englandTeam->setName('England');
-        $englandTeam->setStrip('Red and White');
-        $englandTeam->setCountry($uk);
-        $englandTeam->setClubAddress('Olympic Stadium, London');
-        $manager->persist($englandTeam);
-
-        $franceTeam = new Team();
-        $franceTeam->setName('France');
-        $franceTeam->setStrip('Black and White');
-        $franceTeam->setCountry($uk);
-        $franceTeam->setClubAddress('Paris Sports Arena');
-        $manager->persist($franceTeam);
+        $faker = Factory::create();
 
         $premierLeague = new League();
         $premierLeague->setName('Premier League');
@@ -58,70 +36,48 @@ class AppFixtures extends Fixture
 
         $worldCup = new League();
         $worldCup->setName('World Cup');
-        $worldCup->addTeam($englandTeam);
-        $worldCup->addTeam($franceTeam);
         $manager->persist($worldCup);
 
-        $faker = Factory::create();
-        $teamnames = [
-            'UK' => [
-                'Ipswich Town',
-                'QPR',
-                'Manchester City',
-                'Wigan',
-                'Portsmouth',
-            ],
-            'France' => [
-                'Paris St. Germain',
-                'Olympique de Marseille',
-                'Olympique Lyonnais',
-                'AS Monaco FC',
-                'Lille OSC',
-            ],
+        // Premier League Teams
+
+        $premierLeagueTeamNames = [
+            'Ipswich Town',
+            'QPR',
+            'Manchester City',
+            'Wigan',
+            'Portsmouth',
         ];
 
-        foreach ($teamnames as $countryName => $countryTeamNames) {
-            foreach ($countryTeamNames as $countryTeamName) {
+        foreach ($premierLeagueTeamNames as $premierLeagueTeamName) {
 
-                $team = new Team();
-                $team->setName($countryTeamName);
-                $team->setStrip($faker->colorName . ' and ' . $faker->colorName);
-                $team->setCountry($countryName == 'UK' ? $uk : $france);
-                $team->setClubAddress($faker->address);
+            $premierLeagueTeam = new Team();
+            $premierLeagueTeam->setName($premierLeagueTeamName);
+            $premierLeagueTeam->setStrip($faker->colorName . ' and ' . $faker->colorName);
+            $premierLeagueTeam->setClubAddress($faker->address);
 
-                $manager->persist($team);
+            $manager->persist($premierLeagueTeam);
+            $premierLeague->addTeam($premierLeagueTeam);
 
-                if($countryName == 'UK'){
-                    $premierLeague->addTeam($team);
-                }
+            for ($playerCount = 0; $playerCount < 15; $playerCount++) {
 
-                for($playerCount = 0; $playerCount < 15; $playerCount ++){
+                $newPlayer = new Player();
+                $newPlayer->setHeightCm(mt_rand(160, 200));
+                $newPlayer->setAge(mt_rand(19, 35));
+                $newPlayer->setName($faker->name('male'));
 
-                    $newPlayer = new Player();
-                    $newPlayer->setHeightCm(mt_rand(160, 200));
-                    $newPlayer->setAge(mt_rand(19, 35));
-                    $newPlayer->setName($faker->name('male'));
+                $manager->persist($newPlayer);
 
-                    $manager->persist($newPlayer);
-
-                    $team->addPlayer($newPlayer);
-
-                    if($playerCount % 5 == 0){
-                        $countryTeamName == 'UK' ?
-                        $englandTeam->addPlayer($newPlayer)
-                            : $franceTeam->addPlayer($newPlayer);
-                    }
-
-                }
+                $premierLeagueTeam->addPlayer($newPlayer);
             }
-
         }
+
+        // PLAY THE PREMIER LEAGUE
 
         $premierLeagueTeams = $premierLeague->getTeams();
 
         foreach ($premierLeagueTeams as $homeTeam) {
             foreach ($premierLeagueTeams as $awayTeam) {
-                if($homeTeam->getName() !== $awayTeam->getName()){
+                if ($homeTeam->getName() !== $awayTeam->getName()) {
 
                     $leagueMatch = new LeagueMatch();
                     $leagueMatch->setLeague($premierLeague);
@@ -129,13 +85,13 @@ class AppFixtures extends Fixture
                     $leagueMatch->setHomeTeam($homeTeam);
                     $leagueMatch->setAwayTeam($awayTeam);
 
-                    $leagueMatch->setHomeTeamGoalsScored(mt_rand(0,8));
-                    $leagueMatch->setHomeTeamYellowCards(mt_rand(0,4));
-                    $leagueMatch->setHomeTeamRedCards(mt_rand(0,2));
+                    $leagueMatch->setHomeTeamGoalsScored(mt_rand(0, 8));
+                    $leagueMatch->setHomeTeamYellowCards(mt_rand(0, 4));
+                    $leagueMatch->setHomeTeamRedCards(mt_rand(0, 2));
 
-                    $leagueMatch->setAwayTeamGoalsScored(mt_rand(0,8));
-                    $leagueMatch->setAwayTeamYellowCards(mt_rand(0,4));
-                    $leagueMatch->setAwayTeamRedCards(mt_rand(0,2));
+                    $leagueMatch->setAwayTeamGoalsScored(mt_rand(0, 8));
+                    $leagueMatch->setAwayTeamYellowCards(mt_rand(0, 4));
+                    $leagueMatch->setAwayTeamRedCards(mt_rand(0, 2));
 
                     $premierLeague->addMatch($leagueMatch);
 
@@ -143,6 +99,46 @@ class AppFixtures extends Fixture
             }
         }
 
+        for ($worldCupTeamCount = 0; $worldCupTeamCount < 15; $worldCupTeamCount++) {
+
+            $worldCupTeam = new Team();
+            $worldCupTeam->setName($faker->country);
+            $worldCupTeam->setStrip($faker->colorName . ' and ' . $faker->colorName);
+            $worldCupTeam->setClubAddress($faker->address);
+
+            $manager->persist($worldCupTeam);
+
+            $worldCup->addTeam($worldCupTeam);
+
+        }
+
+        // PLAY THE WORLD CUP
+
+        $worldCupTeams = $worldCup->getTeams();
+
+        foreach ($worldCupTeams as $homeTeam) {
+            foreach ($worldCupTeams as $awayTeam) {
+                if ($homeTeam->getName() !== $awayTeam->getName()) {
+
+                    $leagueMatch = new LeagueMatch();
+                    $leagueMatch->setLeague($worldCup);
+                    $leagueMatch->setDate($faker->dateTimeBetween('-1 year'));
+                    $leagueMatch->setHomeTeam($homeTeam);
+                    $leagueMatch->setAwayTeam($awayTeam);
+
+                    $leagueMatch->setHomeTeamGoalsScored(mt_rand(0, 8));
+                    $leagueMatch->setHomeTeamYellowCards(mt_rand(0, 4));
+                    $leagueMatch->setHomeTeamRedCards(mt_rand(0, 2));
+
+                    $leagueMatch->setAwayTeamGoalsScored(mt_rand(0, 8));
+                    $leagueMatch->setAwayTeamYellowCards(mt_rand(0, 4));
+                    $leagueMatch->setAwayTeamRedCards(mt_rand(0, 2));
+
+                    $worldCup->addMatch($leagueMatch);
+
+                }
+            }
+        }
 
         // Flush all entities
         $manager->flush();
