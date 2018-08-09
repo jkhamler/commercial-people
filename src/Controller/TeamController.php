@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\DTO\TeamDTO;
 use App\Entity\Team;
 use App\Form\CreateTeam;
+use App\Form\UpdateTeam;
 use Doctrine\DBAL\Types\Type;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,11 +27,13 @@ class TeamController extends Controller
      */
     public function createTeam(Request $request, SerializerInterface $serializer){
 
+        $teamDTO = new TeamDTO();
+
+        $form = $this->createForm(CreateTeam::class, $teamDTO, [
+            'allow_extra_fields' => false,
+        ]);
+
         $data = $request->request->all();
-
-        $team = new Team();
-
-        $form = $this->createForm(CreateTeam::class, $team);
 
         $form->submit($data);
 
@@ -41,8 +45,10 @@ class TeamController extends Controller
                 Response::HTTP_UNAUTHORIZED);
         } else {
 
-            /** @var Team $team */
-            $team = $form->getData();
+            /** @var TeamDTO $teamDTO */
+            $teamDTO = $form->getData();
+
+            $team = $teamDTO->createTeamEntity();
 
             $em = $this->getDoctrine()->getManager();
 
@@ -61,14 +67,41 @@ class TeamController extends Controller
      * @Route("/team/{teamId}", name="update-team", requirements={"leagueId"="\d+"})
      * @Method({"PUT"})
      *
+     * @param int $teamId
      * @param Request $request
      * @param SerializerInterface $serializer
      * @return Response
      */
-    public function updateTeam(Request $request, SerializerInterface $serializer)
+    public function updateTeam($teamId, Request $request, SerializerInterface $serializer)
     {
-        echo 'PUT';exit;
+        $data = $request->request->all();
 
+        $team = new Team();
+
+        $form = $this->createForm(UpdateTeam::class, $team);
+
+        $form->submit($data);
+
+        if (!$form->isValid()) {
+
+            $formErrors = $form->getErrors();
+
+            return new Response("Validation Errors: {$formErrors}",
+                Response::HTTP_UNAUTHORIZED);
+        } else {
+
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($team);
+
+            $em->flush();
+
+            return new Response($serializer->serialize([
+                'team' => $team
+            ], Type::JSON),
+                Response::HTTP_CREATED);
+        }
     }
 
     }
