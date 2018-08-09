@@ -25,7 +25,7 @@ class TeamDTO
 
     private $strip;
 
-    private $club_address;
+    private $clubAddress;
 
     /**
      * This creates a team entity frmo the DTO.
@@ -101,16 +101,16 @@ class TeamDTO
      */
     public function getClubAddress()
     {
-        return $this->club_address;
+        return $this->clubAddress;
     }
 
     /**
-     * @param mixed $club_address
+     * @param mixed $clubAddress
      * @return TeamDTO
      */
-    public function setClubAddress($club_address)
+    public function setClubAddress($clubAddress)
     {
-        $this->club_address = $club_address;
+        $this->clubAddress = $clubAddress;
         return $this;
     }
 

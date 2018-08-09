@@ -61,7 +61,8 @@ class LeagueController extends Controller
             $em->remove($league);
             $em->flush();
 
-            return new Response("League with ID {$leagueId} has been deleted", Response::HTTP_OK);
+            return new Response($serializer->serialize("League with ID {$leagueId} has been deleted",
+                Type::JSON), Response::HTTP_OK);
         }
 
     }

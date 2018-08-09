@@ -15,6 +15,7 @@ modules:
             cleanup: true
         - Db:
              dsn: 'mysql:host=localhost;dbname=commercial_people'
+             port: 8889
              user: 'root'
              password: 'root'
              dump: 'tests/_data/commercial_people_2018-08-09.sql'

@@ -17,14 +17,19 @@ class createTeamCest
 
         $I->canSeeResponseIsJson();
 
+        echo '<pre>';
+        echo print_r($I->grabResponse(), true);
+        echo '</pre>';
+        exit();
 
-        $json = [
-            'team' => [
-                'name' => 'Team from Codeception',
-                'strip' => 'Strip from Codeception',
-                'club_address' => 'Address from Codeception',
-            ]
-        ];
+
+//        $json = [
+//            'team' => [
+//                'name' => 'Team from Codeception',
+//                'strip' => 'Strip from Codeception',
+//                'clubAddress' => 'Address from Codeception',
+//            ]
+//        ];
 
         $I->canSeeResponseContainsJson(
             $json
