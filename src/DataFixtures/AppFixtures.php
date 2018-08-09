@@ -13,6 +13,7 @@ use App\Entity\League;
 use App\Entity\LeagueMatch;
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
@@ -28,6 +29,9 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
+
+        $authenticatedUser = new User();
+
 
         $premierLeague = new League();
         $premierLeague->setName('Premier League');
