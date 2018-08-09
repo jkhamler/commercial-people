@@ -31,7 +31,7 @@ class League
     private $leagueTeams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Match", mappedBy="League")
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="League")
      */
     private $matches;
 
@@ -129,14 +129,14 @@ class League
     }
 
     /**
-     * @return Collection|Match[]
+     * @return Collection|LeagueMatch[]
      */
     public function getMatches(): Collection
     {
         return $this->matches;
     }
 
-    public function addMatch(Match $match): self
+    public function addMatch(LeagueMatch $match): self
     {
         if (!$this->matches->contains($match)) {
             $this->matches[] = $match;
@@ -146,7 +146,7 @@ class League
         return $this;
     }
 
-    public function removeMatch(Match $match): self
+    public function removeMatch(LeagueMatch $match): self
     {
         if ($this->matches->contains($match)) {
             $this->matches->removeElement($match);

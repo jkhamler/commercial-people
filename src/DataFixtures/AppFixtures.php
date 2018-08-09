@@ -11,10 +11,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Country;
 use App\Entity\League;
+use App\Entity\LeagueMatch;
 use App\Entity\Player;
 use App\Entity\Team;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
@@ -36,18 +38,6 @@ class AppFixtures extends Fixture
         $france->setLanguage('French');
         $manager->persist($france);
 
-        $ipswichTown = new Team();
-        $ipswichTown->setName('Ipswich Town');
-        $ipswichTown->setStrip('Blue and White');
-        $ipswichTown->setCountry($uk);
-        $manager->persist($ipswichTown);
-
-        $parisStGermain = new Team();
-        $parisStGermain->setName('Paris St. Germain');
-        $parisStGermain->setStrip('Blue and Red');
-        $parisStGermain->setCountry($france);
-        $manager->persist($parisStGermain);
-
         $englandTeam = new Team();
         $englandTeam->setName('England');
         $englandTeam->setStrip('Red and White');
@@ -60,10 +50,8 @@ class AppFixtures extends Fixture
         $franceTeam->setCountry($uk);
         $manager->persist($franceTeam);
 
-
         $premierLeague = new League();
         $premierLeague->setName('Premier League');
-        $premierLeague->addTeam($ipswichTown);
         $manager->persist($premierLeague);
 
         $worldCup = new League();
@@ -71,27 +59,60 @@ class AppFixtures extends Fixture
         $worldCup->addTeam($englandTeam);
         $manager->persist($worldCup);
 
-        $davidSeaman = new Player();
-        $davidSeaman->setName('David Seaman');
-        $davidSeaman->setAge(45);
-        $davidSeaman->setHeightCm(185);
-        $manager->persist($davidSeaman);
+        $faker = Factory::create();
+        $teamnames = [
+            'UK' => [
+                'Ipswich Town',
+                'QPR',
+                'Manchester City',
+                'Wigan',
+                'Portsmouth',
+            ],
+            'France' => [
+                'Paris St. Germain',
+                'Olympique de Marseille',
+                'Olympique Lyonnais',
+                'AS Monaco FC',
+                'Lille OSC',
+            ],
+        ];
 
-        $neymar = new Player();
-        $neymar->setName('Neymar');
-        $neymar->setAge(26);
-        $neymar->setHeightCm(180);
-        $manager->persist($neymar);
+        foreach ($teamnames as $countryName => $countryTeamNames) {
+            foreach ($countryTeamNames as $countryTeamName) {
 
-        for($playerCount = 0; $playerCount < 15; $playerCount ++){
-            // add players to teams
+                $team = new Team();
+                $team->setName($countryTeamName);
+                $team->setStrip($faker->colorName . ' and ' . $faker->colorName);
+                $team->setCountry($countryName == 'UK' ? $uk : $france);
+
+                $manager->persist($team);
+
+                for($playerCount = 0; $playerCount < 15; $playerCount ++){
+
+                    $newPlayer = new Player();
+                    $newPlayer->setHeightCm(mt_rand(160, 200));
+                    $newPlayer->setAge(mt_rand(19, 35));
+                    $newPlayer->setName($faker->name('male'));
+
+                    $manager->persist($newPlayer);
+
+                    $team->addPlayer($newPlayer);
+
+                    if($playerCount % 5 == 0){
+                        $countryTeamName == 'UK' ?
+                        $englandTeam->addPlayer($newPlayer)
+                            : $franceTeam->addPlayer($newPlayer);
+                    }
+
+                }
+            }
+
         }
 
-        $ipswichTown->addPlayer($davidSeaman);
-        $englandTeam->addPlayer($davidSeaman);
+//        $match = new LeagueMatch();
+//
+//        $premierLeague->addMatch($match);
 
-        $parisStGermain->addPlayer($neymar);
-        $franceTeam->addPlayer($neymar);
 
 
         // Flush all entities
@@ -99,5 +120,6 @@ class AppFixtures extends Fixture
 
 
     }
+
 
 }
