@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\League;
+use App\Repository\LeagueRepository;
 use Doctrine\DBAL\Types\Type;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,9 +47,22 @@ class LeagueController extends Controller
      */
     public function deleteLeague($leagueId, SerializerInterface $serializer){
 
-        echo 'DELETE';exit;
+        $em = $this->getDoctrine()->getManager();
 
+        /** @var League|null $league */
+        $league = $em
+            ->getRepository(League::class)
+            ->find($leagueId);
 
+        if(!$league){
+            return new Response("No League with ID {$leagueId} found", Response::HTTP_NOT_FOUND);
+        }else{
+
+            $em->remove($league);
+            $em->flush();
+
+            return new Response("League with ID {$leagueId} has been deleted", Response::HTTP_OK);
+        }
 
     }
 

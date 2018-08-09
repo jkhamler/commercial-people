@@ -30,13 +30,13 @@ class League
 
     /**
      * @Expose
-     * @ORM\OneToMany(targetEntity="App\Entity\LeagueTeam", mappedBy="league", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueTeam", mappedBy="league", cascade={"persist", "remove"})
      * @var LeagueTeam[]
      */
     private $leagueTeams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="league", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="league", cascade={"persist", "remove"})
      */
     private $leagueMatches;
 
