@@ -28,11 +28,6 @@ class LeagueMatch
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $location;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Team", inversedBy="leagueMatches")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -45,14 +40,34 @@ class LeagueMatch
     private $awayTeam;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default":0})
      */
     private $homeTeamGoalsScored;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default":0})
      */
     private $awayTeamGoalsScored;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    private $homeTeamYellowCards;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    private $homeTeamRedCards;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    private $awayTeamYellowCards;
+
+    /**
+     * @ORM\Column(type="integer", options={"default":0})
+     */
+    private $awayTeamRedCards;
 
 
     /**
@@ -102,25 +117,6 @@ class LeagueMatch
     }
 
     /**
-     * @return string
-     */
-    public function getLocation(): string
-    {
-        return $this->location;
-    }
-
-    /**
-     * @param string $location
-     * @return LeagueMatch
-     */
-    public function setLocation(string $location): self
-    {
-        $this->location = $location;
-
-        return $this;
-    }
-
-    /**
      * @return mixed
      */
     public function getHomeTeam() : LeagueTeam
@@ -132,25 +128,25 @@ class LeagueMatch
      * @param mixed $homeTeam
      * @return LeagueMatch
      */
-    public function setHomeTeam(LeagueTeam $homeTeam) : LeagueMatch
+    public function setHomeTeam(Team $homeTeam) : LeagueMatch
     {
         $this->homeTeam = $homeTeam;
         return $this;
     }
 
     /**
-     * @return LeagueTeam
+     * @return Team
      */
-    public function getAwayTeam() : LeagueTeam
+    public function getAwayTeam() : Team
     {
         return $this->awayTeam;
     }
 
     /**
-     * @param mixed $awayTeam
+     * @param Team $awayTeam
      * @return LeagueMatch
      */
-    public function setAwayTeam(LeagueTeam $awayTeam) : LeagueMatch
+    public function setAwayTeam(Team $awayTeam) : LeagueMatch
     {
         $this->awayTeam = $awayTeam;
         return $this;
@@ -191,6 +187,81 @@ class LeagueMatch
         $this->awayTeamGoalsScored = $awayTeamGoalsScored;
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeamYellowCards() : int
+    {
+        return $this->homeTeamYellowCards;
+    }
+
+    /**
+     * @param int $homeTeamYellowCards
+     * @return LeagueMatch
+     */
+    public function setHomeTeamYellowCards(int $homeTeamYellowCards) : LeagueMatch
+    {
+        $this->homeTeamYellowCards = $homeTeamYellowCards;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeamRedCards() : int
+    {
+        return $this->homeTeamRedCards;
+    }
+
+    /**
+     * @param int $homeTeamRedCards
+     * @return LeagueMatch
+     */
+    public function setHomeTeamRedCards(int $homeTeamRedCards) : LeagueMatch
+    {
+        $this->homeTeamRedCards = $homeTeamRedCards;
+        return $this;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getAwayTeamYellowCards() : int
+    {
+        return $this->awayTeamYellowCards;
+    }
+
+    /**
+     * @param int $awayTeamYellowCards
+     * @return LeagueMatch
+     */
+    public function setAwayTeamYellowCards(int $awayTeamYellowCards) : LeagueMatch
+    {
+        $this->awayTeamYellowCards = $awayTeamYellowCards;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAwayTeamRedCards() : int
+    {
+        return $this->awayTeamRedCards;
+    }
+
+    /**
+     * @param int $awayTeamRedCards
+     * @return LeagueMatch
+     */
+    public function setAwayTeamRedCards(int $awayTeamRedCards) : LeagueMatch
+    {
+        $this->awayTeamRedCards = $awayTeamRedCards;
+        return $this;
+    }
+
+
 
 
 }

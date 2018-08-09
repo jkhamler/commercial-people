@@ -39,6 +39,11 @@ class Team
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $clubAddress;
+
 
     /**
      * @return int
@@ -121,6 +126,25 @@ class Team
         $this->country = $country;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getClubAddress() : string
+    {
+        return $this->clubAddress;
+    }
+
+    /**
+     * @param string $clubAddress
+     * @return Team
+     */
+    public function setClubAddress(string $clubAddress) : Team
+    {
+        $this->clubAddress = $clubAddress;
+        return $this;
+    }
+
 
 
 

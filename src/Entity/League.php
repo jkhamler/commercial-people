@@ -31,7 +31,7 @@ class League
     private $leagueTeams;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="League")
+     * @ORM\OneToMany(targetEntity="App\Entity\LeagueMatch", mappedBy="League", cascade={"persist"})
      */
     private $matches;
 

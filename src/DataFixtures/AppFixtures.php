@@ -42,12 +42,14 @@ class AppFixtures extends Fixture
         $englandTeam->setName('England');
         $englandTeam->setStrip('Red and White');
         $englandTeam->setCountry($uk);
+        $englandTeam->setClubAddress('Olympic Stadium, London');
         $manager->persist($englandTeam);
 
         $franceTeam = new Team();
         $franceTeam->setName('France');
         $franceTeam->setStrip('Black and White');
         $franceTeam->setCountry($uk);
+        $franceTeam->setClubAddress('Paris Sports Arena');
         $manager->persist($franceTeam);
 
         $premierLeague = new League();
@@ -57,6 +59,7 @@ class AppFixtures extends Fixture
         $worldCup = new League();
         $worldCup->setName('World Cup');
         $worldCup->addTeam($englandTeam);
+        $worldCup->addTeam($franceTeam);
         $manager->persist($worldCup);
 
         $faker = Factory::create();
@@ -84,8 +87,13 @@ class AppFixtures extends Fixture
                 $team->setName($countryTeamName);
                 $team->setStrip($faker->colorName . ' and ' . $faker->colorName);
                 $team->setCountry($countryName == 'UK' ? $uk : $france);
+                $team->setClubAddress($faker->address);
 
                 $manager->persist($team);
+
+                if($countryName == 'UK'){
+                    $premierLeague->addTeam($team);
+                }
 
                 for($playerCount = 0; $playerCount < 15; $playerCount ++){
 
@@ -109,10 +117,31 @@ class AppFixtures extends Fixture
 
         }
 
-//        $match = new LeagueMatch();
-//
-//        $premierLeague->addMatch($match);
+        $premierLeagueTeams = $premierLeague->getTeams();
 
+        foreach ($premierLeagueTeams as $homeTeam) {
+            foreach ($premierLeagueTeams as $awayTeam) {
+                if($homeTeam->getName() !== $awayTeam->getName()){
+
+                    $leagueMatch = new LeagueMatch();
+                    $leagueMatch->setLeague($premierLeague);
+                    $leagueMatch->setDate($faker->dateTimeBetween('-1 year'));
+                    $leagueMatch->setHomeTeam($homeTeam);
+                    $leagueMatch->setAwayTeam($awayTeam);
+
+                    $leagueMatch->setHomeTeamGoalsScored(mt_rand(0,8));
+                    $leagueMatch->setHomeTeamYellowCards(mt_rand(0,4));
+                    $leagueMatch->setHomeTeamRedCards(mt_rand(0,2));
+
+                    $leagueMatch->setAwayTeamGoalsScored(mt_rand(0,8));
+                    $leagueMatch->setAwayTeamYellowCards(mt_rand(0,4));
+                    $leagueMatch->setAwayTeamRedCards(mt_rand(0,2));
+
+                    $premierLeague->addMatch($leagueMatch);
+
+                }
+            }
+        }
 
 
         // Flush all entities
