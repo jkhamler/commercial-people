@@ -1,0 +1,9 @@
+## config/packages/security.yaml
+#security:
+#    providers:
+#        your_db_provider:
+#            entity:
+#                class: App\Entity\User
+#                property: apiKey
+#    firewalls:
+#        default:
