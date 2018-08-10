@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\League;
-use App\Repository\LeagueRepository;
 use Doctrine\DBAL\Types\Type;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +17,7 @@ class LeagueController extends Controller
      * @Route("/api/league/{leagueId}/teams", name="league-teams", requirements={"leagueId"="\d+"})
      * @Method({"GET"})
      *
+     * @param int $leagueId
      * @param SerializerInterface $serializer
      * @return Response
      */
@@ -42,6 +42,7 @@ class LeagueController extends Controller
      * @Route("/api/league/{leagueId}", name="delete-league")
      * @Method({"DELETE"})
      *
+     * @param int $leagueId
      * @param SerializerInterface $serializer
      * @return Response
      */
