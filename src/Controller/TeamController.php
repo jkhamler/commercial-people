@@ -20,7 +20,7 @@ class TeamController extends Controller
 {
 
     /**
-     * @Route("/teams", name="list-teams")
+     * @Route("/api/teams", name="list-teams")
      * @Method({"GET"})
      *
      * @param SerializerInterface $serializer
@@ -40,7 +40,7 @@ class TeamController extends Controller
     /**
      * Creates a new team via a POST request.
      *
-     * @Route("/team", name="create-team")
+     * @Route("/api/team", name="create-team")
      * @Method({"POST"})
      *
      * @param Request $request
@@ -95,7 +95,7 @@ class TeamController extends Controller
     /**
      * Updates the Team information Via a PUT request.
      *
-     * @Route("/team/{teamId}", name="update-team", requirements={"leagueId"="\d+"})
+     * @Route("/api/team/{teamId}", name="update-team", requirements={"leagueId"="\d+"})
      * @Method({"PUT"})
      *
      * @param int $teamId

@@ -43,9 +43,18 @@ class User implements UserInterface
     }
 
     /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+
+    /**
      * @return string
      */
-    public function getUsername()
+    public function getUsername() : string
     {
         return $this->username;
     }
@@ -53,7 +62,7 @@ class User implements UserInterface
     /**
      * @return null|string
      */
-    public function getSalt()
+    public function getSalt() : ?string
     {
         return null;
     }
@@ -61,17 +70,19 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword() : string
     {
         return $this->password;
     }
 
     /**
-     * @param $password
+     * @param string $password
+     * @return User
      */
-    public function setPassword($password)
+    public function setPassword(string $password) : User
     {
         $this->password = $password;
+        return $this;
     }
 
     /**

@@ -15,7 +15,7 @@ class LeagueController extends Controller
 {
 
     /**
-     * @Route("/league/{leagueId}/teams", name="league-teams", requirements={"leagueId"="\d+"})
+     * @Route("/api/league/{leagueId}/teams", name="league-teams", requirements={"leagueId"="\d+"})
      * @Method({"GET"})
      *
      * @param SerializerInterface $serializer
@@ -39,7 +39,7 @@ class LeagueController extends Controller
     }
 
     /**
-     * @Route("/league/{leagueId}", name="delete-league")
+     * @Route("/api/league/{leagueId}", name="delete-league")
      * @Method({"DELETE"})
      *
      * @param SerializerInterface $serializer
@@ -67,12 +67,8 @@ class LeagueController extends Controller
 
     }
 
-
-
-
-
     /**
-     * @Route("/league-stats", name="league-stats")
+     * @Route("/api/league-stats", name="league-stats")
      *
      * @param SerializerInterface $serializer
      * @return Response
