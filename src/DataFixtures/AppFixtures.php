@@ -20,7 +20,6 @@ use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
-
     /**
      * Load Application Fixtures (Fake Data)
      *
@@ -29,9 +28,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
-
-        $authenticatedUser = new User();
-
 
         $premierLeague = new League();
         $premierLeague->setName('Premier League');
