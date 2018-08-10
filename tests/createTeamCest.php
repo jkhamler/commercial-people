@@ -17,16 +17,5 @@ class createTeamCest
             'clubAddress' => 'Address from Codeception'
         ]));
 
-        $json = [
-            'team' => [
-                'name' => 'Team from Codeception',
-                'strip' => 'Strip from Codeception',
-                'clubAddress' => 'Address from Codeception',
-            ]
-        ];
-
-        $I->canSeeResponseContainsJson(
-            $json
-        );
     }
 }

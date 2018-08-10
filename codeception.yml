@@ -8,6 +8,7 @@ suites:
                 - REST:
                     url: http://localhost:8888
                     depends: PhpBrowser
+    unit:
 
 paths:
     tests: tests

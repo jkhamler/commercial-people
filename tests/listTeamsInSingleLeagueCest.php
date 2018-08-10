@@ -11,7 +11,6 @@ class listTeamsInSingleLeagueCest
 
         $I->sendGET('/api/league/3/teams');
 
-
         $I->seeResponseContainsJson(array (
             'teams' =>
                 array (
